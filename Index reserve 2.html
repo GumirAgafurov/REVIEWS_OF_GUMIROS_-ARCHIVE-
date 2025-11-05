@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Album Covers Gallery</title>
+    
+    <style>
+        :root {
+            --cover-size: 300px;
+        }
+
+        /* Animation that rotates the cover */
+        @keyframes rotate-cover {
+            0% {
+                transform: translateX(-100%) rotateY(-45deg) scale(0.8);
+            }
+            35% {
+                transform: translateX(0) rotateY(-45deg) scale(0.9);
+            }
+            50% {
+                transform: rotateY(0deg) translateZ(2em) scale(1.2);
+            }
+            65% {
+                transform: translateX(0) rotateY(45deg) scale(0.9);
+            }
+            100% {
+                transform: translateX(100%) rotateY(45deg) scale(0.8);
+            }
+        }
+
+        /* Animation that adjusts z-index */
+        @keyframes adjust-z-index {
+            0% { z-index: 1; }
+            50% { z-index: 100; }
+            100% { z-index: 1; }
+        }
+
+        /* Container setup */
+        .cards-wrapper {
+            perspective: 40em;
+            overflow: hidden;
+            user-select: none;
+            cursor: grab;
+            position: relative;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        .cards-wrapper:active {
+            cursor: grabbing;
+        }
+
+        .cards {
+            transform-style: preserve-3d;
+            list-style: none;
+            white-space: nowrap;
+            overflow-x: scroll;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            padding: 50px 0;
+            margin: 0;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 50px calc(50vw - var(--cover-size) / 2);
+        }
+
+        .cards::-webkit-scrollbar {
+            display: none;
+        }
+        .cards {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* List item setup */
+        .cards li {
+            display: inline-flex;
+            width: var(--cover-size);
+            height: var(--cover-size);
+            scroll-snap-align: center;
+            margin: 0 15px;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex-shrink: 0;
+            perspective: 40em;
+        }
+
+        /* Active indicator */
+        .cards li::after {
+            content: attr(data-index);
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.9);
+            color: #000;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .cards li.active::after {
+            opacity: 1;
+        }
+
+        .cards li img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: relative;
+            border-radius: 10px;
+            box-shadow: 
+                0 10px 30px rgba(0,0,0,0.3),
+                0 0 0 1px rgba(255,255,255,0.1);
+            
+            transform-style: preserve-3d;
+            transform-origin: center;
+            will-change: transform;
+            
+            /* Reflection effect */
+            -webkit-box-reflect: below 0.5em linear-gradient(transparent, rgba(0,0,0,0.25));
+        }
+
+        /* Scroll-driven animations for modern browsers */
+        @supports (view-timeline-name: --test) {
+            .cards li {
+                view-timeline-name: --li-in-and-out-of-view;
+                view-timeline-axis: inline;
+                animation: adjust-z-index linear both;
+                animation-timeline: --li-in-and-out-of-view;
+                transform-style: preserve-3d;
+            }
+            
+            .cards li img {
+                animation: rotate-cover linear both;
+                animation-timeline: --li-in-and-out-of-view;
+                transform: translateX(-100%) rotateY(-45deg) scale(0.8);
+            }
+            
+            /* Hide debug info for modern browsers since animations work automatically */
+            .debug-info {
+                display: none;
+            }
+        }
+
+        /* Fallback for older browsers */
+        @supports not (view-timeline-name: --test) {
+            .cards li img {
+                transform: rotateY(25deg) scale(0.9);
+                transition: transform 0.3s ease;
+            }
+            
+            .fallback-warning {
+                display: block;
+            }
+        }
+
+        .instructions {
+            text-align: center;
+            color: #fff;
+            margin-top: 20px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        .debug-info {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            z-index: 1000;
+        }
+
+        .fallback-warning {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ff9800;
+            color: black;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            z-index: 1000;
+        }
+
+        .navigation {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .nav-btn.active {
+            background: rgba(255,255,255,0.5);
+            font-weight: bold;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Browser support indicator */
+        .browser-support {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #ccc;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-info" id="debugInfo">
+        JavaScript Fallback Active<br>
+        Active card: <span id="activeCard">-</span><br>
+        Scroll position: <span id="scrollPos">0</span>
+    </div>
+
+    <div class="fallback-warning" id="fallbackWarning">
+        Using JavaScript fallback animations<br>
+        For better performance, use Chrome 115+
+    </div>
+
+    <div class="cards-wrapper">
+        <ul class="cards">
+            <li data-index="1"><img src="images/post1.jfif" alt="Album cover 1" draggable="false"></li>
+            <li data-index="2"><img src="images/post2.jfif" alt="Album cover 2" draggable="false"></li>
+            <li data-index="3"><img src="images/post3.jfif" alt="Album cover 3" draggable="false"></li>
+            <li data-index="4"><img src="images/post4.jfif" alt="Album cover 4" draggable="false"></li>
+            <li data-index="5"><img src="images/post5.jfif" alt="Album cover 5" draggable="false"></li>
+            <li data-index="6"><img src="images/post6.jfif" alt="Album cover 6" draggable="false"></li>
+        </ul>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" onclick="scrollToCard(0)">Card 1</button>
+        <button class="nav-btn" onclick="scrollToCard(1)">Card 2</button>
+        <button class="nav-btn" onclick="scrollToCard(2)">Card 3</button>
+        <button class="nav-btn" onclick="scrollToCard(3)">Card 4</button>
+        <button class="nav-btn" onclick="scrollToCard(4)">Card 5</button>
+        <button class="nav-btn" onclick="scrollToCard(5)">Card 6</button>
+    </div>
+    
+    <div class="instructions">
+        Drag to scroll • Click buttons to navigate • 3D Album Covers Gallery
+    </div>
+
+    <div class="browser-support" id="browserSupport">
+        Checking browser support...
+    </div>
+
+    <!-- Polyfill for Scroll-driven Animations -->
+    <script src="https://flackr.github.io/scroll-timeline/dist/scroll-timeline.js"></script>
+
+    <script>
+        // Detect browser support for Scroll-driven Animations
+        const supportsScrollDriven = CSS.supports('view-timeline-name', '--test');
+        const browserSupport = document.getElementById('browserSupport');
+        const fallbackWarning = document.getElementById('fallbackWarning');
+        const debugInfo = document.getElementById('debugInfo');
+
+        if (supportsScrollDriven) {
+            browserSupport.textContent = '✓ Using native Scroll-driven Animations (Chrome 115+)';
+            browserSupport.style.color = '#4CAF50';
+            fallbackWarning.style.display = 'none';
+            debugInfo.style.display = 'none';
+        } else {
+            browserSupport.textContent = '⚠ Using JavaScript fallback animations';
+            browserSupport.style.color = '#FF9800';
+            fallbackWarning.style.display = 'block';
+            debugInfo.style.display = 'block';
+        }
+
+        // Common variables
+        const wrapper = document.querySelector('.cards-wrapper');
+        const container = document.querySelector('.cards');
+        const images = document.querySelectorAll('.cards li img');
+        const listItems = document.querySelectorAll('.cards li');
+        const activeCardSpan = document.getElementById('activeCard');
+        const scrollPosSpan = document.getElementById('scrollPos');
+        const navButtons = document.querySelectorAll('.nav-btn');
+
+        // Drag functionality (needed for both approaches)
+        let isDragging = false;
+        let startX;
+        let scrollLeft;
+
+        function startDrag(e) {
+            isDragging = true;
+            startX = e.pageX || e.touches[0].pageX;
+            scrollLeft = container.scrollLeft;
+            e.preventDefault();
+        }
+
+        function duringDrag(e) {
+            if (!isDragging) return;
+            const x = e.pageX || (e.touches && e.touches[0].pageX);
+            const walk = (x - startX) * 1.5;
+            container.scrollLeft = scrollLeft - walk;
+        }
+
+        function endDrag() {
+            isDragging = false;
+        }
+
+        // Event listeners for drag
+        wrapper.addEventListener('mousedown', startDrag);
+        wrapper.addEventListener('touchstart', startDrag, { passive: false });
+        document.addEventListener('mousemove', duringDrag);
+        document.addEventListener('touchmove', duringDrag, { passive: false });
+        document.addEventListener('mouseup', endDrag);
+        document.addEventListener('touchend', endDrag);
+        wrapper.addEventListener('dragstart', (e) => e.preventDefault());
+
+        // Navigation function
+        function scrollToCard(cardIndex) {
+            if (cardIndex < 0 || cardIndex >= listItems.length) return;
+            
+            const li = listItems[cardIndex];
+            const liCenter = li.offsetLeft + li.offsetWidth / 2;
+            const containerCenter = container.clientWidth / 2;
+            const targetScroll = liCenter - containerCenter;
+            
+            container.scrollTo({
+                left: targetScroll,
+                behavior: 'smooth'
+            });
+            
+            // Update active nav button
+            navButtons.forEach((btn, index) => {
+                btn.classList.toggle('active', index === cardIndex);
+            });
+        }
+
+        // JavaScript fallback animations (only for unsupported browsers)
+        if (!supportsScrollDriven) {
+            function updateTransforms() {
+                const containerCenter = container.scrollLeft + container.clientWidth / 2;
+                let activeCardIndex = -1;
+                let minDistance = Infinity;
+                
+                images.forEach((img, index) => {
+                    const li = img.parentElement;
+                    const imgCenter = li.offsetLeft + li.offsetWidth / 2;
+                    const distanceFromCenter = Math.abs(containerCenter - imgCenter);
+                    
+                    // Find the closest card to center
+                    if (distanceFromCenter < minDistance) {
+                        minDistance = distanceFromCenter;
+                        activeCardIndex = index;
+                    }
+                    
+                    const normalizedDistance = (containerCenter - imgCenter) / (container.clientWidth / 2);
+                    
+                    // Simulate the CSS animation with JavaScript
+                    const rotation = normalizedDistance * 45; // Match CSS animation
+                    const scale = 1.2 - Math.abs(normalizedDistance) * 0.4; // 0.8 to 1.2
+                    const translateZ = Math.abs(normalizedDistance) * 2; // em units
+                    
+                    img.style.transform = `rotateY(${rotation}deg) scale(${scale}) translateZ(${translateZ}em)`;
+                    
+                    // Remove active class from all
+                    li.classList.remove('active');
+                    
+                    // Enhanced shadow for center image
+                    if (Math.abs(normalizedDistance) < 0.1) {
+                        img.style.boxShadow = 
+                            '0 15px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.2)';
+                    } else {
+                        img.style.boxShadow = 
+                            '0 10px 30px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.1)';
+                    }
+                });
+                
+                // Add active class to the closest card
+                if (activeCardIndex !== -1) {
+                    listItems[activeCardIndex].classList.add('active');
+                    activeCardSpan.textContent = activeCardIndex + 1;
+                    
+                    // Update active nav button
+                    navButtons.forEach((btn, index) => {
+                        btn.classList.toggle('active', index === activeCardIndex);
+                    });
+                }
+                
+                scrollPosSpan.textContent = Math.round(container.scrollLeft);
+            }
+
+            // Update on scroll
+            container.addEventListener('scroll', updateTransforms);
+
+            // Initial transform update
+            updateTransforms();
+
+            // Handle window resize
+            window.addEventListener('resize', updateTransforms);
+
+            // Click to center functionality
+            listItems.forEach((li, index) => {
+                li.addEventListener('click', () => {
+                    scrollToCard(index);
+                });
+            });
+
+            // Initialize to show first card properly
+            setTimeout(() => {
+                updateTransforms();
+            }, 100);
+        } else {
+            // For modern browsers, just handle click events
+            listItems.forEach((li, index) => {
+                li.addEventListener('click', () => {
+                    scrollToCard(index);
+                });
+            });
+        }
+
+        // Wheel handling
+        container.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            container.scrollLeft += e.deltaY * 0.5;
+        }, { passive: false });
+    </script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+/* Animation that rotates the cover */
+@keyframes rotate-cover {
+  0% {
+    transform: translateX(-100%) rotateY(-45deg);
+  }
+  35% {
+    transform: translateX(0) rotateY(-45deg);
+  }
+  50% {
+    transform: rotateY(0deg) translateZ(1em) scale(1.5);
+  }
+  65% {
+    transform: translateX(0) rotateY(45deg);
+  }
+  100% {
+    transform: translateX(100%) rotateY(45deg);
+  }
+}
+
+/* Animation that adjusts z-index */
+@keyframes adjust-z-index {
+  0% { z-index: 1; }
+  50% { z-index: 100; /* When at the center, be on top */ }
+  100% { z-index: 1; }
+}
+
+/* Container setup */
+.cards-wrapper {
+  perspective: 40em;
+}
+.cards {
+  transform-style: preserve-3d;
+  list-style: none;
+  white-space: nowrap;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+
+/* List item setup */
+.cards li {
+  transform-style: preserve-3d;
+  display: inline-block;
+  width: var(--cover-size);
+  aspect-ratio: 1;
+  scroll-snap-align: center;
+  
+  /* Create the named view timeline */
+  view-timeline-name: --li-in-and-out-of-view;
+  view-timeline-axis: inline;
+  
+  /* Apply the z-index animation */
+  animation: adjust-z-index linear both;
+  animation-timeline: --li-in-and-out-of-view;
+  perspective: 40em;
+}
+
+/* Image styling and animation */
+.cards li img {
+  width: 100%;
+  height: auto;
+  
+  /* Optional reflection */
+  -webkit-box-reflect: below 0.5em linear-gradient(transparent, rgba(0,0,0,0.25));
+  
+  /* Apply the rotation animation */
+  animation: rotate-cover linear both;
+  animation-timeline: --li-in-and-out-of-view;
+  
+  /* Prevent FOUC with polyfill */
+  transform: translateX(-100%) rotateY(-45deg);
+  transform-style: preserve-3d;
+  will-change: transform;
+  
+  position: relative;
+  user-select: none;
+}
