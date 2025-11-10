@@ -9,25 +9,13 @@
 <body>
 
 
-<div class="parallax-3d-bg" id="parallax3dBg">
-    <div class="bg-cards" id="bgCards">
-                <div class="bg-card" data-bg-index="2">
-            <img src="images/back4.jpg" alt="Фон 5" class="bg-card-front">
-            <img src="images/back5.jpg" alt="Фон 6" class="bg-card-back">
-        </div>
-        <div class="bg-card" data-bg-index="0">
-            <img src="images/back0.jpg" alt="Фон 1" class="bg-card-front">
-            <img src="images/back1.jpg" alt="Фон 2" class="bg-card-back">
-        </div>
-        <div class="bg-card" data-bg-index="1">
-            <img src="images/back2.jpg" alt="Фон 3" class="bg-card-front">
-            <img src="images/back3.jpg" alt="Фон 4" class="bg-card-back">
-        </div>
-        <div class="bg-card" data-bg-index="2">
-            <img src="images/back4.jpg" alt="Фон 5" class="bg-card-front">
-            <img src="images/back5.jpg" alt="Фон 6" class="bg-card-back">
-        </div>
-    </div>
+<div class="static-background" id="staticBackground">
+    <div class="bg-slide active" style="background-image: url('images/back0.jpg')"></div>
+    <div class="bg-slide" style="background-image: url('images/back1.jpg')"></div>
+    <div class="bg-slide" style="background-image: url('images/back2.jpg')"></div>
+    <div class="bg-slide" style="background-image: url('images/back3.jpg')"></div>
+    <div class="bg-slide" style="background-image: url('images/back4.jpg')"></div>
+    <div class="bg-slide" style="background-image: url('images/back5.jpg')"></div>
 </div>
     
 <div class="d14"><h1>ГУМИРОС АМИГОС ОБО ВСЁМ</h1></div>
@@ -38,6 +26,7 @@
 
     <div class="cards-wrapper">
         <ul class="cards">
+                <li><img src="images/post18.jfif" alt="Album cover 6" draggable="false"></li>
              <li><img src="images/post0.jfif" alt="Album cover 0" draggable="false"></li>
              <li><img src="images/post7.jpg" alt="Album cover 0" draggable="false"></li>
               <li><img src="images/post8.jfif" alt="Album cover 0" draggable="false"></li>
@@ -56,6 +45,7 @@
              <li><img src="images/post15.jfif" alt="Album cover 6" draggable="false"></li>
                <li><img src="images/post16.jfif" alt="Album cover 6" draggable="false"></li>
                <li><img src="images/post17.jfif" alt="Album cover 6" draggable="false"></li>
+                
         </ul>
     </div>
 
@@ -379,64 +369,35 @@ document.addEventListener('click', function() {
     }
 }, { once: true });
 
-// 3D фон
-function init3DBackground() {
-    const bgCards = document.querySelectorAll(".bg-card");
-    const bgContainer = document.getElementById("bgCards");
-    let hasScrolled = false;
-
-    function update3DBackground() {
+function initStaticBackground() {
+    const bgSlides = document.querySelectorAll('.bg-slide');
+    const totalSlides = bgSlides.length;
+    
+    function updateBackground() {
         const scrollLeft = container.scrollLeft;
         const maxScroll = container.scrollWidth - container.clientWidth;
         const scrollProgress = maxScroll > 0 ? scrollLeft / maxScroll : 0;
-
-        if (scrollLeft > 10 && !hasScrolled) {
-            hasScrolled = true;
-        }
-
-        const activeSection = Math.floor(scrollProgress * 3);
-
-        bgCards.forEach((card, index) => {
-            const cardProgress = (scrollProgress * 3) - index;
-
-            if (index === activeSection) {
-                card.classList.add("active");
-                
-                let rotation = cardProgress * 180;
-                if (index === 0 && !hasScrolled) {
-                    rotation = 0;
-                }
-                
-                card.style.transform = `rotateY(${rotation}deg)`;
-
-                if (Math.abs(cardProgress - 0.5) < 0.3) {
-                    card.classList.add("transitioning");
-                } else {
-                    card.classList.remove("transitioning");
-                }
+        
+        // Определяем активный слайд на основе прогресса прокрутки
+        const activeSlideIndex = Math.floor(scrollProgress * totalSlides);
+        
+        bgSlides.forEach((slide, index) => {
+            if (index === activeSlideIndex) {
+                slide.classList.add('active');
             } else {
-                card.classList.remove("active", "transitioning");
-                if (index < activeSection) {
-                    card.style.transform = `rotateY(180deg)`;
-                } else {
-                    card.style.transform = `rotateY(0deg)`;
-                }
+                slide.classList.remove('active');
             }
         });
-
-        const parallaxX = -scrollLeft * 0.3;
-        bgContainer.style.transform = `translateX(${parallaxX}px)`;
     }
-
-    container.addEventListener("scroll", update3DBackground);
-    window.addEventListener("resize", update3DBackground);
-    update3DBackground();
+    
+    container.addEventListener("scroll", updateBackground);
+    window.addEventListener("resize", updateBackground);
+    updateBackground();
 }
-
 // Инициализация при загрузке DOM
 document.addEventListener("DOMContentLoaded", function() {
     initializePage();
-    init3DBackground();
+   initStaticBackground();
 });
 
 // Закрытие модального окна при клике вне его
@@ -456,4 +417,3 @@ document.addEventListener('touchstart', function(e) {
 
 
 </body>
-
