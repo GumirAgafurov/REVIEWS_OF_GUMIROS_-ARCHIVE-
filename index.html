@@ -4,504 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
-    
-    <style>
-        
-/* Стили для модального окна */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.8);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-content {
-    background: linear-gradient(135deg, #2a2a4e 0%, #1e2a4e 100%);
-    padding: 30px;
-    max-height: 80vh;
-    border-radius: 15px;
-    max-width: 500px;
-    width: 90%;
-    color: white;
-    position: relative;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-    overflow-y: auto;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-
-.modal-content::-webkit-scrollbar {
-    display: none;
-}
-
-.modal-layout {
-    display: flex;
-    gap: 25px;
-    align-items: flex-start;
-}
-
-.image-column {
-    flex: 0 0 150px;
-    position: sticky;
-    top: 50%;
-      transform: translateY(-50%); 
-      align-self: flex-start;
-}
-
-.image-column img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 10px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-}
-
-.text-column {
-    flex: 1;
-    text-align: left;
-}
-
-.text-column h2 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    color: #fff;
-    font-size: 24px;
-}
-
-.text-column h3 {
-    margin-top: 0;
-    margin-bottom: 15px;
-    color: #ccc;
-    font-size: 18px;
-    font-weight: normal;
-}
-
-.text-column p {
-    line-height: 1.6;
-    margin-bottom: 15px;
-    color: #ddd;
-}
-
-.close-btn {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 24px;
-    cursor: pointer;
-    color: white;
-    background: none;
-    border: none;
-}
-
-.album-title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 15px;
-    color: #fff;
-}
-
-.album-artist {
-    font-size: 18px;
-    margin-bottom: 20px;
-    color: #ccc;
-}
-
-.album-description {
-    font-size: 16px;
-    line-height: 1.6;
-    margin-bottom: 20px;
-    color: #ddd;
-}
-
-.album-tracks {
-    text-align: left;
-    margin-top: 20px;
-}
-
-.album-tracks h4 {
-    margin-bottom: 10px;
-    color: #fff;
-}
-
-.album-tracks ol {
-    padding-left: 20px;
-}
-
-.album-tracks li {
-    margin-bottom: 8px;
-    color: #ccc;
-}
-
-/* Стили для 3D галереи */
-:root {
-    --cover-size: 300px;
-}
-
-.cards-wrapper {
-    perspective: 40em;
-    overflow: hidden;
-    user-select: none;
-    cursor: grab;
-    position: relative;
-    height: 500px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-}
-
-.cards-wrapper:active {
-    cursor: grabbing;
-}
-
-.cards {
-    transform-style: preserve-3d;
-    list-style: none;
-    white-space: nowrap;
-    overflow-x: hidden;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    padding: 50px 0;
-    margin: 0;
-    height: 400px;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding: 50px calc(50vw - var(--cover-size) / 2);
-       overflow-y: hidden;
-}
-
-.cards::-webkit-scrollbar {
-    display: none;
-}
-
-.cards {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-
-/* Убираем вертикальную полосу прокрутки на всей странице */
-html, body {
-    overflow-y: hidden; /* Убирает вертикальную прокрутку */
-    height: 100%;
-}
-
-/* Или если нужно убрать только у определенных элементов */
-.cards-wrapper,
-.cards,
-.modal-content {
-    overflow-y: hidden; /* Убирает вертикальную прокрутку */
-}
-
-/* Полное скрытие всех скроллбаров */
-::-webkit-scrollbar {
-    display: none !important;
-    width: 0 !important;
-    height: 0 !important;
-}
-
-/* Для Firefox */
-html {
-    scrollbar-width: none;
-}
-
-.cards li {
-    display: inline-flex;
-    width: var(--cover-size);
-    height: var(--cover-size);
-    scroll-snap-align: center;
-    margin: 0 15px;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    flex-shrink: 0;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-
-
-.cards li img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    position: relative;
-    border-radius: 10px;
-    box-shadow: 
-        0 10px 30px rgba(0,0,0,0.3),
-        0 0 0 1px rgba(255,255,255,0.1);
-    transform-style: preserve-3d;
-    transition: transform 0.3s ease;
-    transform: rotateY(25deg) scale(0.9);
-    transform-origin: center;
-}
-
-.cards li:hover img {
-    transform: rotateY(25deg) scale(0.95) translateZ(10px);
-    box-shadow: 
-        0 15px 40px rgba(0,0,0,0.4),
-        0 0 0 2px rgba(255,255,255,0.2);
-}
-
-/* Общие стили */
-.instructions {
-    text-align: center;
-    color: #fff;
-    margin-top: 20px;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    opacity: 0.7;
-}
-
-.debug-info {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    background: rgba(0,0,0,0.8);
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    font-family: monospace;
-    font-size: 12px;
-}
-
-.navigation {
-    margin-top: 20px;
-    display: flex;
-    gap: 10px;
-}
-
-.nav-btn {
-    padding: 8px 16px;
-    background: rgba(255,255,255,0.2);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.nav-btn:hover {
-    background: rgba(255,255,255,0.3);
-}
-
-body {
-    margin: 0;
-    padding: 20px;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-family: Arial, sans-serif;
-}
-
-.d14 h1 {
-  display: table;
-  width: auto;
-  margin: 15px auto;
-  letter-spacing: 2px;
-}
-.d14 h1:before {
-  content: "";
-  position: relative;
-  top: -50%;
-  left: -25px;
-  width: 30px;
-  height: 20px;
-  border-top: 2px solid #fed57b;
-  border-left: 2px solid #fed57b;
-}
-.d14 h1:after {
-  content: "";
-  position: relative;
-  bottom: -50%;
-  right: -25px;
-  width: 30px;
-  height: 20px;
-  border-bottom: 2px solid #fed57b;
-  border-right: 2px solid #fed57b;
-}
-
-.d14 h1 {
-    color:orange;
-}
-
-.d13 h2{
-    color:#fed57b;
-    content: "";
-  position: relative;
-  bottom: -50%;
-  right: -25px;
-  width: 30px;
-  height: 20px;
-}
-
-
-
-/* Адаптивность */
-@media (max-width: 768px) {
-    .modal-layout {
-        flex-direction: column;
-        text-align: center;
-        gap: 20px;
-    }
-    
-    .image-column {
-        position: static;
-        transform: none;
-        align-self: center;
-        flex: 0 0 auto;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-    }
-    
-    .image-column img {
-        width: 150px;
-        height: 150px;
-    }
-    
-    .text-column {
-        text-align: center;
-        width: 100%;
-    }
-    
-    .modal-content {
-        padding: 20px;
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    /* Стили для галереи */
-    .cards-wrapper {
-        height: 400px;
-    }
-    
-    .cards {
-        height: 350px;
-        padding: 50px 20px;
-    }
-    
-    .cards li {
-        width: 250px;
-        height: 250px;
-        padding: 10px;
-    }
-    
-    /* Улучшаем отзывчивость для тач-устройств */
-    .cards li img {
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-}
-
-@media (max-width: 600px) {
-    .modal-layout {
-        flex-direction: column;
-        text-align: center;
-        gap: 20px;
-    }
-    
-    .image-column {
-        flex: 0 0 auto;
-    }
-    
-    .image-column img {
-        width: 120px;
-        height: 120px;
-    }
-    
-    .text-column {
-        text-align: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .cards li {
-        width: 200px;
-        height: 200px;
-        margin: 0 10px;
-    }
-    
-    .navigation {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    
-    .nav-btn {
-        padding: 6px 12px;
-        font-size: 14px;
-    }
-}
-
-/* Стили для кнопки музыки */
-.music-player {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1001;
-}
-
-.music-btn {
-    background: rgba(255,255,255,0.2);
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-    color: white;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
-}
-
-.music-btn:hover {
-    background: rgba(255,255,255,0.3);
-    transform: scale(1.1);
-}
-
-.music-btn.playing {
-    background: rgba(254, 213, 123, 0.3);
-    color: #fed57b;
-}
-
-
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+
+<div class="parallax-3d-bg" id="parallax3dBg">
+    <div class="bg-cards" id="bgCards">
+                <div class="bg-card" data-bg-index="2">
+            <img src="images/back4.jpg" alt="Фон 5" class="bg-card-front">
+            <img src="images/back5.jpg" alt="Фон 6" class="bg-card-back">
+        </div>
+        <div class="bg-card" data-bg-index="0">
+            <img src="images/back0.jpg" alt="Фон 1" class="bg-card-front">
+            <img src="images/back1.jpg" alt="Фон 2" class="bg-card-back">
+        </div>
+        <div class="bg-card" data-bg-index="1">
+            <img src="images/back2.jpg" alt="Фон 3" class="bg-card-front">
+            <img src="images/back3.jpg" alt="Фон 4" class="bg-card-back">
+        </div>
+        <div class="bg-card" data-bg-index="2">
+            <img src="images/back4.jpg" alt="Фон 5" class="bg-card-front">
+            <img src="images/back5.jpg" alt="Фон 6" class="bg-card-back">
+        </div>
+    </div>
+</div>
+    
 <div class="d14"><h1>ГУМИРОС АМИГОС ОБО ВСЁМ</h1></div>
 <div class="d13"><h2>Архив Блога</h2></div>
 
 
+
+
     <div class="cards-wrapper">
         <ul class="cards">
-            <li><img src="images/Post6.jfif" alt="Album cover 1" draggable="false"></li>
+             <li><img src="images/post0.jfif" alt="Album cover 0" draggable="false"></li>
+             <li><img src="images/post7.jpg" alt="Album cover 0" draggable="false"></li>
+              <li><img src="images/post8.jfif" alt="Album cover 0" draggable="false"></li>
+              <li><img src="images/post9.jfif" alt="Album cover 0" draggable="false"></li>
+              <li><img src="images/post10.jpg" alt="Album cover 0" draggable="false"></li>
+              <li><img src="images/post11.jfif" alt="Album cover 0" draggable="false"></li>
+             <li><img src="images/post6.jfif" alt="Album cover 2" draggable="false"></li>
             <li><img src="images/post2.jfif" alt="Album cover 2" draggable="false"></li>
+             <li><img src="images/post12.jfif" alt="Album cover 6" draggable="false"></li>
             <li><img src="images/post3.jfif" alt="Album cover 3" draggable="false"></li>
             <li><img src="images/post4.jfif" alt="Album cover 4" draggable="false"></li>
             <li><img src="images/post5.jfif" alt="Album cover 5" draggable="false"></li>
             <li><img src="images/post1.jfif" alt="Album cover 6" draggable="false"></li>
+            <li><img src="images/post13.jfif" alt="Album cover 6" draggable="false"></li>
+             <li><img src="images/post14.jfif" alt="Album cover 6" draggable="false"></li>
+             <li><img src="images/post15.jfif" alt="Album cover 6" draggable="false"></li>
+               <li><img src="images/post16.jfif" alt="Album cover 6" draggable="false"></li>
+               <li><img src="images/post17.jfif" alt="Album cover 6" draggable="false"></li>
         </ul>
     </div>
 
-    <div class="navigation">
-        <button class="nav-btn" onclick="scrollToCard(0)">Пост 1</button>
-        <button class="nav-btn" onclick="scrollToCard(1)">Пост 2</button>
-        <button class="nav-btn" onclick="scrollToCard(2)">Пост 3</button>
-        <button class="nav-btn" onclick="scrollToCard(3)">Пост 4</button>
-        <button class="nav-btn" onclick="scrollToCard(4)">Пост 5</button>
-        <button class="nav-btn" onclick="scrollToCard(5)">Пост 6</button>
-    </div>
-    
+<div class="navigation">
+    <button class="nav-arrow" onclick="scrollNav(-1)">←</button>
+    <div class="nav-buttons" id="navButtons"></div>
+    <button class="nav-arrow" onclick="scrollNav(1)">→</button>
+</div>
     <div class="instructions">
     </div>
 <!-- Модальное окно для отображения информации об альбоме -->
@@ -512,7 +74,7 @@ body {
             <div class="image-column">
                 <img id="modalImage" src="" alt="Album cover" style="width: 150px; height: 150px; object-fit: cover; border-radius: 10px;">
             </div>
-            <div class="text-column">
+            <div class="text-column animated-text">
                 <h2 class="album-title" id="modalTitle"></h2>
                 <p class="album-artist" id="modalArtist"></p>
                 <p class="album-description" id="modalDescription"></p>
@@ -528,61 +90,152 @@ body {
         Ваш браузер не поддерживает аудио элемент.
     </audio>
 </div>
+
+<div class="social-links">
+    <a href="https://t.me/AmigosGumiros" class="social-link telegram" target="_blank" rel="noopener" title="Наш Telegram канал">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240.1 240.1" width="25" height="25">
+            <linearGradient id="TelegramGradient" gradientUnits="userSpaceOnUse" x1="-838.041" y1="660.581" x2="-838.041" y2="660.3427" gradientTransform="matrix(1000 0 0 -1000 838161 660581)">
+                <stop offset="0" style="stop-color:#2AABEE"/>
+                <stop offset="1" style="stop-color:#229ED9"/>
+            </linearGradient>
+            <circle fill-rule="evenodd" clip-rule="evenodd" fill="url(#TelegramGradient)" cx="120.1" cy="120.1" r="120.1"/>
+            <path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M54.3,118.8c35-15.2,58.3-25.3,70-30.2 c33.3-13.9,40.3-16.3,44.8-16.4c1,0,3.2,0.2,4.7,1.4c1.2,1,1.5,2.3,1.7,3.3s0.4,3.1,0.2,4.7c-1.8,19-9.6,65.1-13.6,86.3 c-1.7,9-5,12-8.2,12.3c-7,0.6-12.3-4.6-19-9c-10.6-6.9-16.5-11.2-26.8-18c-11.9-7.8-4.2-12.1,2.6-19.1c1.8-1.8,32.5-29.8,33.1-32.3 c0.1-0.3,0.1-1.5-0.6-2.1c-0.7-0.6-1.7-0.4-2.5-0.2c-1.1,0.2-17.9,11.4-50.6,33.5c-4.8,3.3-9.1,4.9-13,4.8 c-4.3-0.1-12.5-2.4-18.7-4.4c-7.5-2.4-13.5-3.7-13-7.9C45.7,123.3,48.7,121.1,54.3,118.8z"/>
+        </svg>
+    </a>
+</div>
     <script>
-        const wrapper = document.querySelector('.cards-wrapper');
-        const container = document.querySelector('.cards');
-        const images = document.querySelectorAll('.cards li img');
-        const listItems = document.querySelectorAll('.cards li');
-        const debugInfo = document.getElementById('debugInfo');
-        const activeCardSpan = document.getElementById('activeCard');
-        const scrollPosSpan = document.getElementById('scrollPos');
-        const maxScrollSpan = document.getElementById('maxScroll');
+    // Глобальные переменные
+const wrapper = document.querySelector('.cards-wrapper');
+const container = document.querySelector('.cards');
+const images = document.querySelectorAll('.cards li img');
+const listItems = document.querySelectorAll('.cards li');
+const navigation = document.querySelector('.navigation');
 
-        let isDragging = false;
-        let startX;
-        let scrollLeft;
+let isDragging = false;
+let startX;
+let scrollLeft;
+let albumData = [];
 
-        function startDrag(e) {
-            isDragging = true;
-            startX = e.pageX || e.touches[0].pageX;
-            scrollLeft = container.scrollLeft;
-            e.preventDefault();
+// Загрузка данных
+async function loadAlbumData() {
+    try {
+        const response = await fetch('data/albums.json');
+        const data = await response.json();
+        return data.posts;
+    } catch (error) {
+        console.error('Ошибка загрузки данных:', error);
+        return getFallbackData();
+    }
+}
+
+// Резервные данные
+function getFallbackData() {
+    return [
+        {
+            title: "Данные загружаются...",
+            artist: "Пожалуйста, подождите",
+            description: "Информация скоро появится",
+            image: "images/post1.jfif"
         }
+    ];
+}
 
-        function duringDrag(e) {
-            if (!isDragging) return;
-            const x = e.pageX || (e.touches && e.touches[0].pageX);
-            const walk = (x - startX) * 1.5;
-            container.scrollLeft = scrollLeft - walk;
-        }
+// Инициализация при загрузке страницы
+async function initializePage() {
+    albumData = await loadAlbumData();
+    updateNavigation();
+    initEventListeners();
+    updateTransforms();
+}
 
-        function endDrag() {
-            isDragging = false;
-        }
+// Обновление навигационных кнопок
+let currentNavPage = 0;
+const buttonsPerPage = 3;
 
-        // Event listeners
-        wrapper.addEventListener('mousedown', startDrag);
-        wrapper.addEventListener('touchstart', startDrag, { passive: false });
-        document.addEventListener('mousemove', duringDrag);
-        document.addEventListener('touchmove', duringDrag, { passive: false });
-        document.addEventListener('mouseup', endDrag);
-        document.addEventListener('touchend', endDrag);
-        wrapper.addEventListener('dragstart', (e) => e.preventDefault());
+function updateNavigation() {
+    const navButtons = document.getElementById('navButtons');
+    navButtons.innerHTML = '';
+    
+    const start = currentNavPage * buttonsPerPage;
+    const end = start + buttonsPerPage;
+    
+    for (let i = start; i < end && i < albumData.length; i++) {
+        const button = document.createElement('button');
+        button.className = 'nav-btn';
+        button.textContent = i + 1;
+        button.onclick = () => scrollToCard(i);
+        navButtons.appendChild(button);
+    }
+}
 
-        // Function to scroll to specific card
-        function scrollToCard(cardIndex) {
-            if (cardIndex < 0 || cardIndex >= listItems.length) return;
-            
-            const li = listItems[cardIndex];
-            const liCenter = li.offsetLeft + li.offsetWidth / 2;
-            const containerCenter = container.clientWidth / 2;
-            const targetScroll = liCenter - containerCenter;
-            
-            container.scrollTo({
-                left: targetScroll,
-                behavior: 'smooth'
-            });
-        }
+function scrollNav(direction) {
+    const totalPages = Math.ceil(albumData.length / buttonsPerPage);
+    currentNavPage = (currentNavPage + direction + totalPages) % totalPages;
+    updateNavigation();
+}
+// Инициализация всех обработчиков событий
+function initEventListeners() {
+    // Drag events
+    wrapper.addEventListener('mousedown', startDrag);
+    wrapper.addEventListener('touchstart', startDrag, { passive: false });
+    document.addEventListener('mousemove', duringDrag);
+    document.addEventListener('touchmove', duringDrag, { passive: false });
+    document.addEventListener('mouseup', endDrag);
+    document.addEventListener('touchend', endDrag);
+    wrapper.addEventListener('dragstart', (e) => e.preventDefault());
+
+    // Scroll events
+    container.addEventListener('scroll', updateTransforms);
+    window.addEventListener('resize', updateTransforms);
+
+    // Click events for cards
+    listItems.forEach((li, index) => {
+        li.addEventListener('click', () => {
+            if (!isDragging) {
+                openModal(index);
+            }
+        });
+    });
+
+    // Touch events for mobile
+    initTouchEvents();
+}
+
+// Функции для перетаскивания
+function startDrag(e) {
+    isDragging = true;
+    startX = e.pageX || e.touches[0].pageX;
+    scrollLeft = container.scrollLeft;
+    e.preventDefault();
+}
+
+function duringDrag(e) {
+    if (!isDragging) return;
+    const x = e.pageX || (e.touches && e.touches[0].pageX);
+    const walk = (x - startX) * 1.5;
+    container.scrollLeft = scrollLeft - walk;
+}
+
+function endDrag() {
+    isDragging = false;
+}
+
+// Прокрутка к конкретной карточке
+function scrollToCard(cardIndex) {
+    if (cardIndex < 0 || cardIndex >= listItems.length) return;
+    
+    const li = listItems[cardIndex];
+    const liCenter = li.offsetLeft + li.offsetWidth / 2;
+    const containerCenter = container.clientWidth / 2;
+    const targetScroll = liCenter - containerCenter;
+    
+    container.scrollTo({
+        left: targetScroll,
+        behavior: 'smooth'
+    });
+}
+
+// Обновление 3D трансформаций
 function updateTransforms() {
     const containerCenter = container.scrollLeft + container.clientWidth / 2;
     let activeCardIndex = -1;
@@ -593,7 +246,6 @@ function updateTransforms() {
         const imgCenter = li.offsetLeft + li.offsetWidth / 2;
         const distanceFromCenter = Math.abs(containerCenter - imgCenter);
         
-        // Find the closest card to center
         if (distanceFromCenter < minDistance) {
             minDistance = distanceFromCenter;
             activeCardIndex = index;
@@ -606,168 +258,82 @@ function updateTransforms() {
         
         img.style.transform = `rotateY(${rotation}deg) scale(${scale}) translateZ(${translateZ}px)`;
         
-        // Remove active class from all
         li.classList.remove('active');
         
-        // Enhanced shadow for center image
         if (Math.abs(normalizedDistance) < 0.1) {
-            img.style.boxShadow = 
-                '0 15px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.2)';
+            img.style.boxShadow = '0 15px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.2)';
         } else {
-            img.style.boxShadow = 
-                '0 10px 30px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.1)';
+            img.style.boxShadow = '0 10px 30px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.1)';
         }
     });
     
-    // Add active class to the closest card
     if (activeCardIndex !== -1) {
         listItems[activeCardIndex].classList.add('active');
-        // УДАЛИТЕ ИЛИ ЗАКОММЕНТИРУЙТЕ ЭТУ СТРОКУ:
-        // activeCardSpan.textContent = activeCardIndex + 1;
     }
-    
-    // УДАЛИТЕ ИЛИ ЗАКОММЕНТИРУЙТЕ ЭТИ СТРОКИ:
-    // scrollPosSpan.textContent = Math.round(container.scrollLeft);
-    // maxScrollSpan.textContent = Math.round(container.scrollWidth - container.clientWidth);
 }
 
-        // Update on scroll
-        container.addEventListener('scroll', updateTransforms);
-
-        // Initial transform update
-        updateTransforms();
-
-        // Handle window resize
-        window.addEventListener('resize', updateTransforms);
-
-        // Click to center functionality
-        listItems.forEach((li, index) => {
-            li.addEventListener('click', () => {
-                scrollToCard(index);
-            });
-        });
-
-        // Initialize to show first card properly
-        setTimeout(() => {
-            updateTransforms();
-        }, 100);
-
-        // Данные для альбомов
-const albumData = [
-    {
-        title: "Клик. С пультом по жизни",
-        artist: "отзыв",
-        description: "Я никогда не был поклонником Адама Сэндлера. Я смотрел некоторые фильмы по телику, но это было не преднамеренно, единственный фильм, который я целенаправленно посмотрел - 'Неограненные драгоценности'. Но прям поклонником его комедий про пердеж - меня не назвать. Но я много слышал о тех ролях, где он играет не только в таком пердежном жанре. И вот 'Клик. С пультом по жизни' как раз тоже выделялся, по тем слухам, что я слышал, хорошей драмой посреди комедии. И... Это реально так! Как и 'Множество' тут комедия с элементами фантастики. Герой Адама получает Пульт, который может останавливать время, мотать его, перемещать в прошлое. Казалось бы, можно множество комедийных ситуаций сделать и они их и сделали, но...! За все приходится платить. Если кратко, то пульт запоминает, что ГГ перематывал и из-за этого перематывает почти всю его жизнь! И вот тут внезапно пердежные шутки кончаются и начинается драма... И я даже всплакнул в конце! Мораль с 'Множеством' похожи. Нужно не спешить и жить жизнь. Вполне годно",
-    },
-    {
-        title: "Electric Pulse",
-        artist: "Voltage Collective",
-        description: "High-energy electronic anthems that fuse futuristic sounds with nostalgic 80s influences. Perfect for late-night drives.",
-    },
-    {
-        title: "Ocean Breeze",
-        artist: "Coastal Vibes",
-        description: "Relaxing ambient tracks inspired by the sea. Gentle waves, soothing melodies, and atmospheric sounds for ultimate relaxation.",
-    },
-    {
-        title: "Urban Legends",
-        artist: "City Beats",
-        description: "Raw, gritty hip-hop beats that tell stories of city life. From underground clubs to rooftop parties.",
-    },
-    {
-        title: "Desert Sun",
-        artist: "Mirage Band",
-        description: "Psychedelic rock meets desert blues. Hypnotic rhythms and reverb-drenched guitars that evoke vast, open landscapes.",
-    },
-    {
-        title: "Winter Echoes",
-        artist: "Frost Symphony",
-        description: "Cinematic orchestral pieces that capture the beauty and melancholy of winter. From gentle snowfalls to epic blizzards.",
-    }
-];
-
-// Функции для работы с модальным окном
-function openModal(albumIndex) {
+// Модальное окно
+async function openModal(albumIndex) {
     const modal = document.getElementById('albumModal');
+    
+    if (albumData.length === 0) {
+        albumData = await loadAlbumData();
+    }
+    
     const album = albumData[albumIndex];
     
-    // Заполняем модальное окно данными
-    document.getElementById('modalImage').src = document.querySelectorAll('.cards li img')[albumIndex].src;
-    document.getElementById('modalTitle').textContent = album.title;
-    document.getElementById('modalArtist').textContent = album.artist;
-    document.getElementById('modalDescription').textContent = album.description;
-    
-
-    // Показываем модальное окно
-    modal.style.display = 'flex';
+    if (album) {
+        document.getElementById('modalImage').src = album.image || document.querySelectorAll('.cards li img')[albumIndex].src;
+        document.getElementById('modalTitle').textContent = album.title;
+        document.getElementById('modalArtist').textContent = album.artist;
+        document.getElementById('modalDescription').innerHTML = album.description;
+        
+        modal.style.display = 'flex';
+    }
 }
 
 function closeModal() {
     document.getElementById('albumModal').style.display = 'none';
 }
 
-// Закрытие модального окна при клике вне его
-document.getElementById('albumModal').addEventListener('click', function(e) {
-    if (e.target === this) {
-        closeModal();
-    }
-});
+// Touch events для мобильных
+function initTouchEvents() {
+    let touchStartX = 0;
+    let touchStartTime = 0;
+    let isTap = false;
 
-// Добавляем обработчики клика на карточки
-listItems.forEach((li, index) => {
-    li.addEventListener('click', (e) => {
-        // Проверяем, не был ли клик частью перетаскивания
-        if (!isDragging) {
-            openModal(index);
+    wrapper.addEventListener('touchstart', function(e) {
+        touchStartX = e.touches[0].clientX;
+        touchStartTime = Date.now();
+        isTap = true;
+    });
+
+    wrapper.addEventListener('touchmove', function(e) {
+        const touchMoveX = e.touches[0].clientX;
+        if (Math.abs(touchMoveX - touchStartX) > 10) {
+            isTap = false;
         }
     });
-});
 
-// Сбрасываем флаг перетаскивания при клике
-document.addEventListener('click', () => {
-    isDragging = false;
-});
-
-
-// Улучшенная обработка тач-событий для мобильных устройств
-let touchStartX = 0;
-let touchStartTime = 0;
-let isTap = false;
-
-// Обработчики для определения тапа vs свайпа
-wrapper.addEventListener('touchstart', function(e) {
-    touchStartX = e.touches[0].clientX;
-    touchStartTime = Date.now();
-    isTap = true;
-});
-
-wrapper.addEventListener('touchmove', function(e) {
-    const touchMoveX = e.touches[0].clientX;
-    if (Math.abs(touchMoveX - touchStartX) > 10) {
-        isTap = false; // Это свайп, не тап
-    }
-});
-
-wrapper.addEventListener('touchend', function(e) {
-    const touchEndTime = Date.now();
-    const isQuickTap = (touchEndTime - touchStartTime) < 300;
-    
-    if (isTap && isQuickTap) {
-        // Находим активную карточку и открываем модальное окно
-        const activeCard = document.querySelector('.cards li.active');
-        if (activeCard) {
-            const index = Array.from(listItems).indexOf(activeCard);
-            openModal(index);
+    wrapper.addEventListener('touchend', function(e) {
+        const touchEndTime = Date.now();
+        const isQuickTap = (touchEndTime - touchStartTime) < 300;
+        
+        if (isTap && isQuickTap) {
+            const activeCard = document.querySelector('.cards li.active');
+            if (activeCard) {
+                const index = Array.from(listItems).indexOf(activeCard);
+                openModal(index);
+            }
         }
-    }
-});
+    });
+}
 
-// Авто-скролл к ближайшей карточке после скролла (для мобильных)
+// Авто-скролл для мобильных
 let scrollTimeout;
 container.addEventListener('scroll', function() {
     clearTimeout(scrollTimeout);
     scrollTimeout = setTimeout(function() {
-        // После завершения скролла автоматически центрируем ближайшую карточку
         const containerCenter = container.scrollLeft + container.clientWidth / 2;
         let closestCardIndex = 0;
         let minDistance = Infinity;
@@ -785,31 +351,7 @@ container.addEventListener('scroll', function() {
     }, 100);
 });
 
-// Улучшенная обработка кликов для десктопа и мобильных
-listItems.forEach((li, index) => {
-    // Удаляем старый обработчик
-    li.removeEventListener('click', null);
-    
-    // Добавляем улучшенный обработчик
-    li.addEventListener('click', function(e) {
-        if (window.innerWidth > 768) { // Десктоп
-            if (!isDragging) {
-                openModal(index);
-            }
-        } else { // Мобильные
-            // На мобильных всегда открываем по клику
-            openModal(index);
-        }
-    });
-});
-
-// Предотвращаем конфликты жестов на мобильных
-document.addEventListener('touchstart', function(e) {
-    if (e.target.closest('.cards-wrapper')) {
-        e.stopPropagation();
-    }
-}, { passive: true });
-
+// Музыкальный плеер
 const backgroundMusic = document.getElementById('backgroundMusic');
 const musicBtn = document.querySelector('.music-btn');
 
@@ -821,11 +363,11 @@ function toggleMusic() {
     } else {
         backgroundMusic.pause();
         musicBtn.classList.remove('playing');
-        musicBtn.innerHTML = '♪';
+        musicBtn.innerHTML = "🔇";
     }
 }
 
-// Автозапуск музыки (опционально)
+// Автозапуск музыки
 document.addEventListener('click', function() {
     if (backgroundMusic.paused) {
         backgroundMusic.play().then(() => {
@@ -836,6 +378,80 @@ document.addEventListener('click', function() {
         });
     }
 }, { once: true });
+
+// 3D фон
+function init3DBackground() {
+    const bgCards = document.querySelectorAll(".bg-card");
+    const bgContainer = document.getElementById("bgCards");
+    let hasScrolled = false;
+
+    function update3DBackground() {
+        const scrollLeft = container.scrollLeft;
+        const maxScroll = container.scrollWidth - container.clientWidth;
+        const scrollProgress = maxScroll > 0 ? scrollLeft / maxScroll : 0;
+
+        if (scrollLeft > 10 && !hasScrolled) {
+            hasScrolled = true;
+        }
+
+        const activeSection = Math.floor(scrollProgress * 3);
+
+        bgCards.forEach((card, index) => {
+            const cardProgress = (scrollProgress * 3) - index;
+
+            if (index === activeSection) {
+                card.classList.add("active");
+                
+                let rotation = cardProgress * 180;
+                if (index === 0 && !hasScrolled) {
+                    rotation = 0;
+                }
+                
+                card.style.transform = `rotateY(${rotation}deg)`;
+
+                if (Math.abs(cardProgress - 0.5) < 0.3) {
+                    card.classList.add("transitioning");
+                } else {
+                    card.classList.remove("transitioning");
+                }
+            } else {
+                card.classList.remove("active", "transitioning");
+                if (index < activeSection) {
+                    card.style.transform = `rotateY(180deg)`;
+                } else {
+                    card.style.transform = `rotateY(0deg)`;
+                }
+            }
+        });
+
+        const parallaxX = -scrollLeft * 0.3;
+        bgContainer.style.transform = `translateX(${parallaxX}px)`;
+    }
+
+    container.addEventListener("scroll", update3DBackground);
+    window.addEventListener("resize", update3DBackground);
+    update3DBackground();
+}
+
+// Инициализация при загрузке DOM
+document.addEventListener("DOMContentLoaded", function() {
+    initializePage();
+    init3DBackground();
+});
+
+// Закрытие модального окна при клике вне его
+document.getElementById('albumModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeModal();
+    }
+});
+
+// Предотвращаем конфликты жестов на мобильных
+document.addEventListener('touchstart', function(e) {
+    if (e.target.closest('.cards-wrapper')) {
+        e.stopPropagation();
+    }
+}, { passive: true });
     </script>
 
 
