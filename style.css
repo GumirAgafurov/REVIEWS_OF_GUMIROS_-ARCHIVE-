@@ -14,7 +14,7 @@
 }
 
 .modal-content {
-    background: linear-gradient(135deg, #2a2a4e 0%, #1e2a4e 100%);
+    background: linear-gradient(100deg, #2a2a4e 0%, #1e2a4e 100%);
     padding: 30px;
     max-height: 85vh;
     border-radius: 15px;
@@ -310,8 +310,6 @@ body {
   left: -25px;
   width: 30px;
   height: 20px;
-  border-top: 2px solid #fed57b;
-  border-left: 2px solid #fed57b;
 }
 .d14 h1:after {
   content: "";
@@ -320,8 +318,6 @@ body {
   right: -25px;
   width: 30px;
   height: 20px;
-  border-bottom: 2px solid #fed57b;
-  border-right: 2px solid #fed57b;
 }
 
 .d14 h1 {
@@ -336,6 +332,16 @@ body {
   right: -25px;
   width: 30px;
   height: 20px;
+}
+
+.nav-arrow {
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background: rgba(255,255,255,0.3);
 }
 
 
@@ -442,15 +448,15 @@ body {
     position: fixed;
     top: 20px;
     right: 20px;
-    z-index: 1001;
+    z-index: 1000;
 }
 
 .music-btn {
     background: rgba(255,255,255,0.2);
     border: none;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
     color: white;
     font-size: 20px;
@@ -533,6 +539,11 @@ body {
     
     .animated-text .album-description {
         animation-delay: 0.7s;
+    }
+
+    .music-player {
+        bottom: 15px;
+        right: 15px;
     }
     
     @keyframes slideInFromLeftMobile {
@@ -654,3 +665,79 @@ body {
 .bg-card:nth-child(1) {transition-duration: 1.4s;}
 .bg-card:nth-child(2) {transition-duration: 1.2s;}
 .bg-card:nth-child(3) {transition-duration: 1.6s;}
+
+.social-links {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.social-link {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.social-link.telegram {
+    color: #0088cc;
+}
+
+
+.social-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.social-link.telegram:hover {
+    color: #00aaff;
+}
+
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+    .social-links {
+        bottom: 70px;
+        right: 15px;
+    }
+    
+    .social-link {
+        width: 38px;
+        height: 38px;
+    }
+     .music-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 15px;
+    }
+}
+
+/* Анимация появления */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.social-links {
+    animation: fadeInUp 0.6s ease-out;
+}
