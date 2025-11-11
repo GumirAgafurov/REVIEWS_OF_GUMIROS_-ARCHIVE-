@@ -14,7 +14,7 @@
 
 *   **HTML5**
 *   **CSS3** (кастомные свойства, Flexbox/Grid)
-*   **Ванильный JavaScript** (ES6+)
+*   **JavaScript** (ES6+)
 *   **Хостинг:** GitHub Pages
 
 Запуск проекта
