@@ -299,22 +299,38 @@ function initStaticBackground() {
     window.addEventListener("resize", updateBackground);
     updateBackground();
 }
-// Инициализация при загрузке DOM
+
 document.addEventListener("DOMContentLoaded", function() {
     initializePage();
    initStaticBackground();
 });
 
-// Закрытие модального окна при клике вне его
+
 document.getElementById('albumModal').addEventListener('click', function(e) {
     if (e.target === this) {
         closeModal();
     }
 });
 
-// Предотвращаем конфликты жестов на мобильных
+
 document.addEventListener('touchstart', function(e) {
     if (e.target.closest('.cards-wrapper')) {
         e.stopPropagation();
     }
 }, { passive: true });
+
+function toggleRightsSection() {
+    const modal = document.getElementById('albumModal');
+    const rightsModal = document.getElementById('rightsModal');
+    
+
+    if (modal.style.display === 'flex') {
+        modal.style.display = 'none';
+    }
+    
+    if (rightsModal.style.display === 'flex') {
+        rightsModal.style.display = 'none';
+    } else {
+        rightsModal.style.display = 'flex';
+    }
+}
