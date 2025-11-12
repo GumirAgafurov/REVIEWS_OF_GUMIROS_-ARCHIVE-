@@ -814,3 +814,77 @@ body {
         padding-top: 45px;
     }
 }
+
+
+.rights-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000;
+}
+
+.rights-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    cursor: pointer;
+    color: white;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    font-family: Arial, sans-serif;
+    font-weight: 500;
+    min-width: 120px;
+}
+
+.rights-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border-color: rgba(254, 213, 123, 0.3);
+}
+
+.rights-btn:active {
+    transform: translateY(0);
+}
+
+.btn-text {
+    white-space: nowrap;
+}
+
+
+@media (max-width: 768px) {
+    .rights-button {
+        bottom: 15px;
+        left: 15px;
+    }
+    
+    .rights-btn {
+        padding: 6px 12px;
+        font-size: 11px;
+        min-width: 110px;
+    }
+}
+
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.rights-button {
+    animation: fadeInUp 0.6s ease-out;
+}
+
